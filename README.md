@@ -1,80 +1,174 @@
-# Simple 2D Platformer in Assembly
+# 2D Platformer in Pure Assembly
 
-A basic 2D platformer game written in x86-64 assembly for Linux, using terminal-based graphics.
+A fully-featured 2D platformer game written in 100% pure assembly language for multiple platforms. Features sprite rendering, physics, and smooth gameplay - all without any high-level language dependencies.
 
-## Features
+## 🎮 Features
 
-- Terminal-based graphics using ANSI escape codes
-- Simple physics with gravity and jumping
-- Platform collision detection
-- Smooth 60 FPS gameplay
-- Level with multiple platforms
+- **Pure Assembly**: Written entirely in assembly language - no C, C++, or other high-level languages
+- **Cross-Platform**: Supports Windows (x64/x86), macOS (ARM64/x86-64), and Linux
+- **Sprite Graphics**: Full sprite rendering with placeholder assets
+- **Physics Engine**: Gravity, jumping, and collision detection
+- **Smooth Gameplay**: 60 FPS with double buffering
+- **Level Design**: Tile-based level system with multiple platform types
 
-## Requirements
+## 🖼️ Game Assets
 
-- Linux x86-64 system
-- NASM assembler
-- GNU Make
+The game includes placeholder sprite assets:
+- Player character (32x32)
+- Platform tiles (32x32)
+- Grass platform tiles (32x32)
+- Background (800x600)
+- Coins (24x24)
+- Enemies (32x32)
 
-## Building
+## 📁 Project Structure
+
+```
+.
+├── assets/                    # Sprite assets (PNG format)
+│   ├── player.png
+│   ├── platform.png
+│   ├── grass_platform.png
+│   ├── background.png
+│   ├── coin.png
+│   └── enemy.png
+├── windows/
+│   ├── x64/
+│   │   ├── platformer_win64.asm         # Basic Windows x64 version
+│   │   ├── platformer_win64_sprites.asm # Enhanced version with sprites
+│   │   └── build.bat
+│   └── x86/
+│       ├── platformer_win32.asm
+│       └── build.bat
+├── macos/
+│   ├── arm64/
+│   │   ├── platformer_macos_arm64.asm
+│   │   └── build.sh
+│   └── x86_64/
+│       ├── platformer_macos_x64.asm
+│       └── build.sh
+├── linux/
+│   ├── platformer.asm         # Terminal-based Linux version
+│   └── Makefile
+└── generate_assets.py         # Script to generate placeholder assets
+```
+
+## 🛠️ Building the Game
+
+### Prerequisites
+
+- **NASM**: The Netwide Assembler (all platforms)
+- **Platform-specific tools**:
+  - Windows: GoLink, Visual Studio Build Tools, or MinGW
+  - macOS: Xcode Command Line Tools
+  - Linux: GNU Make, ld
+
+### Windows (x64)
 
 ```bash
-# Install dependencies (if not already installed)
-sudo apt-get install nasm make
+cd windows/x64
+build.bat
+```
 
-# Build the game
+The build script will automatically detect and use available linkers (GoLink, MSVC, or MinGW).
+
+### macOS (ARM64 - Apple Silicon)
+
+```bash
+cd macos/arm64
+chmod +x build.sh
+./build.sh
+```
+
+### macOS (x86-64 - Intel)
+
+```bash
+cd macos/x86_64
+chmod +x build.sh
+./build.sh
+```
+
+### Linux
+
+```bash
+cd linux
 make
-
-# Or build and run
-make run
+./platformer
 ```
 
-## Controls
+## 🎮 Controls
 
-- **A/a** - Move left
-- **D/d** - Move right
-- **W/w/Space** - Jump (only when on ground)
-- **Q/q** - Quit game
+- **Arrow Keys** or **A/D**: Move left/right
+- **Space** or **W** or **Up Arrow**: Jump (only when on ground)
+- **Escape** or **Q**: Quit game
 
-## How to Play
+## 🏗️ Technical Details
 
-1. You control the `@` character
-2. Navigate through the level by jumping between platforms
-3. The `#` characters represent solid platforms
-4. Try to explore the entire level!
+### Windows Implementation
+- Uses Win32 API for window creation and event handling
+- GDI/GDI+ for graphics rendering
+- Double buffering for smooth animation
+- Timer-based game loop (60 FPS)
 
-## Game Mechanics
+### macOS Implementation
+- Uses Cocoa framework through Objective-C runtime
+- Core Graphics for rendering
+- NSTimer for game loop
+- Supports both ARM64 and x86-64 architectures
 
-- **Gravity**: The player is constantly pulled downward
-- **Jump**: Press jump while on a platform to leap upward
-- **Movement**: Left/right movement is instant
-- **Collision**: The player cannot pass through platforms
+### Linux Implementation
+- Terminal-based graphics using ANSI escape codes
+- Raw terminal mode for real-time input
+- Custom rendering engine
 
-## Technical Details
+## 🎯 Game Mechanics
 
-The game is written entirely in x86-64 assembly and uses:
-- Linux system calls for I/O
-- Terminal raw mode for real-time input
-- ANSI escape sequences for graphics
-- Non-blocking input for smooth gameplay
-- Custom physics engine with collision detection
+- **Gravity**: Constant downward acceleration
+- **Jumping**: Fixed impulse when on ground
+- **Collision Detection**: Tile-based collision system
+- **Level Format**: 2D array where:
+  - `0` = Empty space
+  - `1` = Brick platform
+  - `2` = Grass platform
 
-## Level Design
+## 🚀 Advanced Features
 
-The level is stored as a 40x20 character grid where:
-- `#` represents solid platforms
-- `.` represents empty space
-- The level is surrounded by walls
+The Windows sprite version (`platformer_win64_sprites.asm`) includes:
+- PNG sprite loading support (via GDI+)
+- Transparent sprite rendering
+- Background gradients
+- Enhanced visual effects
 
-You can modify the level by editing the `level` data in `platformer.asm`.
+## 📝 Notes
 
-## Troubleshooting
+- The game is written in pure assembly with no external dependencies beyond system APIs
+- Each platform version is optimized for its specific architecture
+- The code demonstrates advanced assembly techniques including:
+  - System call interfaces
+  - Window management
+  - Event handling
+  - Graphics programming
+  - Memory management
 
-If the game doesn't exit cleanly, your terminal might be left in raw mode. To fix this:
+## 🤝 Contributing
+
+This is a demonstration of pure assembly programming across platforms. Feel free to:
+- Add new platform support
+- Implement actual sprite loading
+- Add sound effects (using platform audio APIs)
+- Create new levels
+- Optimize the physics engine
+
+## 📄 License
+
+This project is released into the public domain. Use it as you wish!
+
+## 🎨 Generating Assets
+
+To regenerate the placeholder assets:
+
 ```bash
-reset
+python3 generate_assets.py
 ```
 
-## License
-
-This project is released into the public domain.
+This requires Python 3 with PIL/Pillow installed.
